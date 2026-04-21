@@ -8,6 +8,19 @@ function AppContent() {
   const [currentPage, setCurrentPage] = useState<'settings' | 'seats' | 'scoring' | 'export'>('settings');
   const { classes, addClass } = useAppContext();
   const [showForm, setShowForm] = useState(classes.length === 0);
+  const [className, setClassName] = useState('');
+  const [rows, setRows] = useState(6);
+  const [cols, setCols] = useState(6);
+
+  const handleCreateClass = () => {
+    if (className.trim()) {
+      addClass(className, rows, cols);
+      setClassName('');
+      setRows(6);
+      setCols(6);
+      setShowForm(false);
+    }
+  };
 
   return (
     <>
@@ -21,35 +34,28 @@ function AppContent() {
               <input
                 type="text"
                 placeholder="班級名稱"
-                id="classNameInput"
+                value={className}
+                onChange={(e) => setClassName(e.target.value)}
                 className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-4 py-3 text-white placeholder-slate-400"
               />
               <div className="grid grid-cols-2 gap-3">
                 <input
                   type="number"
                   placeholder="行數"
-                  defaultValue="6"
-                  id="rowsInput"
+                  value={rows}
+                  onChange={(e) => setRows(parseInt(e.target.value) || 6)}
                   className="rounded-lg border border-slate-600 bg-slate-700/50 px-4 py-3 text-white"
                 />
                 <input
                   type="number"
                   placeholder="列數"
-                  defaultValue="6"
-                  id="colsInput"
+                  value={cols}
+                  onChange={(e) => setCols(parseInt(e.target.value) || 6)}
                   className="rounded-lg border border-slate-600 bg-slate-700/50 px-4 py-3 text-white"
                 />
               </div>
               <button
-                onClick={() => {
-                  const name = (document.getElementById('classNameInput') as HTMLInputElement)?.value;
-                  const rows = parseInt((document.getElementById('rowsInput') as HTMLInputElement)?.value || '6');
-                  const cols = parseInt((document.getElementById('colsInput') as HTMLInputElement)?.value || '6');
-                  if (name) {
-                    addClass(name, rows, cols);
-                    setShowForm(false);
-                  }
-                }}
+                onClick={handleCreateClass}
                 className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-blue-500 px-6 py-3 font-semibold text-white transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/50 active:scale-95"
               >
                 創建班級
