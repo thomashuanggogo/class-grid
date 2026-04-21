@@ -12,13 +12,19 @@ function AppContent() {
   const [rows, setRows] = useState(6);
   const [cols, setCols] = useState(6);
 
+  console.log('AppContent rendered, classes:', classes, 'showForm:', showForm);
+
   const handleCreateClass = () => {
+    console.log('handleCreateClass called, className:', className);
     if (className.trim()) {
+      console.log('Creating class:', className, rows, cols);
       addClass(className, rows, cols);
       setClassName('');
       setRows(6);
       setCols(6);
       setShowForm(false);
+    } else {
+      console.log('Class name is empty');
     }
   };
 
